@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitLife | Elite Discipline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #080808;
+            --text-main: #ffffff;
+            --sidebar-bg: rgba(10, 10, 10, 0.9);
+            --sidebar-border: #1a1a1a;
+            --accent-orange: #ff9900;
+            --accent-glow: rgba(255, 153, 0, 0.25);
+            --glass-card: rgba(18, 18, 18, 0.7);
+            --card-border: #222;
+        }
+
+        body.light-mode {
+            --bg-main: #f0f0f0;
+            --text-main: #111111;
+            --sidebar-bg: rgba(255, 255, 255, 0.9);
+            --sidebar-border: #ddd;
+            --glass-card: rgba(255, 255, 255, 0.8);
+            --card-border: #ccc;
+        }
+
+        /* --- THE BACKGROUND FIX --- */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.4s ease;
+        }
+
+        /* This creates the aesthetic background layer */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* David Laid Aesthetic */
+            background-image: 
+                linear-gradient(rgba(8, 8, 8, 0.8), rgba(8, 8, 8, 0.9)), 
+                url('https://images.squarespace-cdn.com/content/v1/594c1f0717bffc4832599762/1589133800840-CHV2H5K6D76RML10QZ9T/david+laid.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            z-index: -1; /* Keeps it behind everything */
+        }
+
+        body.light-mode::before {
+            background-image: 
+                linear-gradient(rgba(240, 240, 240, 0.9), rgba(240, 240, 240, 0.9)), 
+                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80');
+        }
+
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            position: fixed; left: 20px; top: 20px; height: calc(100vh - 40px); width: 260px;
+            background: var(--sidebar-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--sidebar-border); border-radius: 30px;
+            display: flex; flex-direction: column; padding: 40px 20px; z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .logo { font-weight: 900; font-size: 1.8rem; margin-bottom: 40px; display: flex; align-items: center; letter-spacing: -1px; }
+        .logo span { background: var(--accent-orange); color: #000; padding: 2px 8px; border-radius: 5px; margin-left: 4px; }
+        .logo a { text-decoration: none; color: inherit; }
+
+        .nav-menu { display: flex; flex-direction: column; gap: 8px; }
+        .nav-item {
+            text-decoration: none; color: #666; padding: 12px 20px; border-radius: 12px;
+            font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        }
+        .nav-item.active { background: var(--accent-orange); color: #000 !important; box-shadow: 0 10px 20px var(--accent-glow); }
+        .nav-item:hover:not(.active) { color: var(--accent-orange); background: rgba(255, 153, 0, 0.05); }
+
+        #theme-toggle {
+            margin-top: auto; background: var(--accent-orange); border: none; padding: 15px;
+            border-radius: 15px; font-weight: 900; cursor: pointer; color: #000;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        /* CONTENT AREA */
+        .content-area { margin-left: 300px; padding: 80px 60px 60px 60px; }
+
+        .ticker-wrap {
+            background: var(--accent-orange); color: #000;
+            padding: 10px 0; font-weight: 900; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 2px;
+            position: fixed; top: 0; left: 300px; width: calc(100% - 300px); z-index: 999;
+        }
+        .ticker { display: flex; animation: ticker 40s linear infinite; white-space: nowrap; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* HERO SECTION - ARNOLD */
+        .hero-banner {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), 
+                        url('https://wallpapers.com/images/featured/arnold-schwarzenegger-bgk36d8m90e80277.jpg') center/cover;
+            padding: 80px 60px; border-radius: 40px; margin-top: 20px; border: 1px solid var(--card-border);
+            backdrop-filter: blur(5px);
+        }
+
+        /* MOTIVATION GRID */
+        .motivation-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 40px;
+        }
+        .m-card {
+            background: var(--glass-card) !important; 
+            border: 1px solid var(--card-border);
+            padding: 30px; border-radius: 30px; 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .m-card img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; filter: grayscale(1); margin-bottom: 15px; border: 2px solid var(--accent-orange); }
+        .m-card h3 { color: var(--accent-orange); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; }
+        .m-card p { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; line-height: 1.4; }
+
+        /* VIDEO & DISCIPLINE */
+        .video-container { margin-top: 40px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; }
+        .video-box { background: #000; border-radius: 35px; overflow: hidden; height: 580px; border: 1px solid var(--card-border); }
+        .discipline-list { 
+            padding: 40px; background: var(--glass-card) !important; 
+            border-radius: 35px; border: 1px solid var(--card-border); 
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
+        .d-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 22px; font-weight: 700; color: #888; }
+        .d-item b { color: var(--text-main); font-size: 1.1rem; display: block;}
+        .d-number { color: var(--accent-orange); font-weight: 900; font-size: 1.2rem; }
+        .audio-tag { font-size: 0.7rem; color: var(--accent-orange); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 5px; margin-top: 5px; }
+
+        @media (max-width: 1100px) {
+            .motivation-grid, .video-container { grid-template-columns: 1fr; }
+            .content-area { margin-left: 100px; padding: 60px 20px; }
+            .sidebar { width: 85px; left: 10px; }
+            .nav-item span, .logo span, #theme-toggle span { display: none; }
+            .ticker-wrap { left: 100px; width: calc(100% - 100px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span>&nbsp;• NO EXCUSES • SUFFER NOW AND LIVE THE REST OF YOUR LIFE AS A CHAMPION • DISCIPLINE IS FREEDOM • YOUR ONLY LIMIT IS YOU • OBSESSION BEATS TALENT • EMBRACE THE PAIN • THE GYM IS THE ANCHOR OF LIFE •&nbsp;</span>
+            <span>&nbsp;• NO EXCUSES • SUFFER NOW AND LIVE THE REST OF YOUR LIFE AS A CHAMPION • DISCIPLINE IS FREEDOM • YOUR ONLY LIMIT IS YOU • OBSESSION BEATS TALENT • EMBRACE THE PAIN • THE GYM IS THE ANCHOR OF LIFE •&nbsp;</span>
+        </div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="logo"><a href="#" style="text-decoration:none; color:inherit;">FIT<span>LIFE</span></a></div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item active">🏠 <span>HOME</span></a>
+            <a href="about.html" class="nav-item">📖 <span>ABOUT</span></a>
+            <a href="services.html" class="nav-item">💪 <span>SERVICES</span></a>
+            <a href="gallery.html" class="nav-item">🖼️ <span>GALLERY</span></a>
+            <a href="contact.html" class="nav-item">📞 <span>CONTACT</span></a>
+        </nav>
+        
+        <button id="theme-toggle">
+            <span id="theme-icon">🌙</span> <span id="theme-text">DARK MODE</span>
+        </button>
+    </aside>
+
+    <main class="content-area">
+        <header>
+            <h1 style="font-size: 3.5rem; font-weight: 900; letter-spacing: -3px; margin: 0;">MINDSET IS EVERYTHING</h1>
+            <p style="color: #666; font-size: 1.1rem; margin-top: 5px;">Forge a body that the soul is proud to inhabit.</p>
+        </header>
+
+        <section class="hero-banner">
+            <p style="font-family: 'Playfair Display', serif; font-size: 2.2rem; font-style: italic; max-width: 800px; line-height: 1.2; margin: 0; color: white;">
+                "It is a shame for a man to grow old without seeing the beauty and strength of which his body is capable."
+            </p>
+            <p style="color: var(--accent-orange); font-weight: 900; letter-spacing: 2px; margin-top: 20px;">— SOCRATES</p>
+        </section>
+
+        <div class="motivation-grid">
+            <div class="m-card">
+                <img src="assets/images/marc.jpg" alt="Marcus Aurelius">
+                <h3>Stoic Resilience</h3>
+                <p>"You have power over your mind — not outside events. Realize this, and you will find strength."</p>
+            </div>
+            <div class="m-card">
+                <img src="assets/images/arnold.jpg" alt="Arnold">
+                <h3>Gym Obsession</h3>
+                <p>"The last three or four reps is what makes the muscle grow. This divides a champion from everyone else."</p>
+            </div>
+            <div class="m-card">
+                <img src="assets/images/seneca.jpg" alt="Seneca">
+                <h3>Life Mastery</h3>
+                <p>"Difficulties strengthen the mind, as labor does the body. Luck is preparation meeting opportunity."</p>
+            </div>
+        </div>
+
+        <div class="video-container">
+            <div class="video-box">
+                <iframe style="width:100%; height:100%; border:none;"
+                        src="https://www.tiktok.com/player/v1/7294406211833154822?autoplay=0"
+                        allowfullscreen></iframe>
+            </div>
+
+            <div class="discipline-list">
+                <h2 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 25px;">The 5 Pillars of Life</h2>
+                
+                <div class="d-item">
+                    <span class="d-number">01</span> 
+                    <div>
+                        <b>Eat for Performance:</b> Your body is a high-end machine; don't fuel it with trash.
+                        <span class="audio-tag">🎵 HIIT Vibe: Lady Gaga - Judas</span>
+                    </div>
+                </div>
+
+                <div class="d-item">
+                    <span class="d-number">02</span> 
+                    <div>
+                        <b>Embrace the Grind:</b> Motivation is fleeting; discipline is what keeps you showing up.
+                        <span class="audio-tag">🎵 Lifting Vibe: Lady Gaga - Marry The Night</span>
+                    </div>
+                </div>
+
+                <div class="d-item">
+                    <span class="d-number">03</span> 
+                    <div>
+                        <b>Seek Discomfort:</b> Growth only happens outside of your comfort zone.
+                        <span class="audio-tag">🎵 Cardio Vibe: Lady Gaga - Edge of Glory</span>
+                    </div>
+                </div>
+
+                <div class="d-item">
+                    <span class="d-number">04</span> 
+                    <div>
+                        <b>Mental Fortitude:</b> Control your reactions, and you control your world.
+                        <span class="audio-tag">🎵 Focus Vibe: Lady Gaga - Scheiße</span>
+                    </div>
+                </div>
+
+                <div class="d-item">
+                    <span class="d-number">05</span> 
+                    <div>
+                        <b>Finish the Set:</b> Whether in the gym or at work, never leave a job half-done.
+                        <span class="audio-tag">🎵 PR Vibe: Lady Gaga - Bad Romance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+
+        function updateThemeUI(isLight) {
+            themeIcon.innerText = isLight ? '☀️' : '🌙';
+            themeText.innerText = isLight ? 'LIGHT MODE' : 'DARK MODE';
+        }
+
+        themeBtn.onclick = () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            updateThemeUI(isLight);
+            localStorage.setItem('fitlife-theme', isLight ? 'light' : 'dark');
+        };
+
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('fitlife-theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                updateThemeUI(true);
+            }
+        };
+    </script>
+</body>
+</html>

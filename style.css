@@ -1,0 +1,30 @@
+﻿:root {
+  --bg-main: #080808;
+  --text-main: #ffffff;
+  --accent-orange: #ff9900;
+  --card-bg: rgba(0,0,0,0.65);
+  --border: rgba(255,255,255,0.12);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  color:var(--text-main);
+  background-color:var(--bg-main);
+  background-image:linear-gradient(180deg,rgba(8,8,8,0.94),rgba(5,5,5,0.98)),url('https://images.squarespace-cdn.com/content/v1/594c1f0717bffc4832599762/1589133800840-CHV2H5K6D76RML10QZ9T/david+laid.jpg');
+  background-size:cover;
+  background-position:center;
+  min-height:100vh;
+}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:24px 32px;background:rgba(0,0,0,0.75);border-bottom:1px solid rgba(255,255,255,0.12);}
+header h1{margin:0;font-size:clamp(2rem,2.5vw,3rem);}
+nav{display:flex;flex-wrap:wrap;gap:14px;}
+nav a{color:var(--text-main);text-decoration:none;font-weight:700;padding:10px 14px;border-radius:999px;transition:background 0.2s ease,color 0.2s ease;}
+nav a:hover{background:rgba(255,153,0,0.16);color:var(--accent-orange);}
+section{max-width:980px;margin:32px auto;padding:28px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:28px;box-shadow:0 24px 80px rgba(0,0,0,0.35);}
+input,select,textarea{width:100%;padding:14px 16px;margin-top:10px;margin-bottom:18px;border:1px solid rgba(255,255,255,0.12);border-radius:16px;background:rgba(255,255,255,0.04);color:var(--text-main);font-size:1rem;}
+button.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 26px;border:none;border-radius:14px;background:var(--accent-orange);color:#000;font-weight:900;cursor:pointer;transition:transform 0.2s ease,box-shadow 0.2s ease;}
+button.btn:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(255,153,0,0.2);}
+#workoutPlan,#mealPlan{margin-top:18px;padding:20px;border-radius:18px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);line-height:1.7;}
+@media(max-width:720px){header{flex-direction:column;align-items:flex-start;}section{margin:18px 16px;padding:22px;}}

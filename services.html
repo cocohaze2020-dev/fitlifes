@@ -1,0 +1,662 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services | FitLife Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #080808;
+      --text-main: #ffffff;
+      --sidebar-bg: rgba(10, 10, 10, 0.98);
+      --sidebar-border: #1a1a1a;
+      --accent-orange: #ff9900;
+      --accent-glow: rgba(255, 153, 0, 0.25);
+      --glass-card: rgba(18, 18, 18, 0.88);
+      --card-border: #222;
+      --text-dim: #aaa;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(5,5,5,0.98) 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.light-mode {
+      --bg-main: #f0f0f0;
+      --text-main: #111111;
+      --text-dim: #888888;
+      --sidebar-bg: rgba(255, 255, 255, 0.95);
+      --sidebar-border: #dddddd;
+      --glass-card: rgba(255, 255, 255, 0.9);
+      --card-border: #cccccc;
+      background: linear-gradient(180deg, #f2f2f2 0%, #e6e6e6 100%);
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 20px;
+      top: 20px;
+      height: calc(100vh - 40px);
+      width: 260px;
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--sidebar-border);
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 20px;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      font-weight: 900;
+      font-size: 1.8rem;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      letter-spacing: -1px;
+    }
+    .logo span {
+      background: var(--accent-orange);
+      color: #000;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-left: 6px;
+      font-size: 0.9rem;
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav-item {
+      text-decoration: none;
+      color: var(--text-dim);
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .nav-item.active,
+    .nav-item:hover {
+      background: var(--accent-orange);
+      color: #000;
+    }
+
+    #theme-toggle {
+      margin-top: auto;
+      background: var(--accent-orange);
+      border: none;
+      padding: 15px;
+      border-radius: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      margin-top: 16px;
+      background: transparent;
+      border: 1px solid var(--sidebar-border);
+      color: var(--text-main);
+      padding: 12px 16px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .back-btn:hover {
+      background: rgba(255, 153, 0, 0.12);
+      border-color: var(--accent-orange);
+    }
+
+    .ticker-wrap {
+      background: var(--accent-orange);
+      color: #000;
+      padding: 10px 0;
+      font-weight: 900;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: fixed;
+      top: 0;
+      left: 300px;
+      width: calc(100% - 300px);
+      z-index: 999;
+    }
+    .ticker {
+      display: flex;
+      animation: ticker 35s linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .content-area {
+      margin-left: 300px;
+      padding: 80px 60px 60px 60px;
+      max-width: 1300px;
+    }
+
+    .assessment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+
+    .input-card,
+    .result-card,
+    .exercise-card {
+      background: var(--glass-card);
+      border: 1px solid var(--card-border);
+      padding: 30px;
+      border-radius: 30px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    .form-row > div {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    input,
+    select {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 16px 18px;
+      border-radius: 14px;
+      outline: none;
+      transition: border-color 0.3s ease, background 0.3s ease;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+    }
+    input:focus,
+    select:focus {
+      border-color: var(--accent-orange);
+      background: rgba(12, 12, 12, 0.12);
+    }
+
+    .calc-btn {
+      width: 100%;
+      background: var(--accent-orange);
+      color: #000;
+      border: none;
+      padding: 18px;
+      border-radius: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .calc-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 35px rgba(255,153,0,0.25);
+    }
+
+    .muscle-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .muscle-btn {
+      background: var(--glass-card);
+      border: 1px solid var(--card-border);
+      color: var(--text-dim);
+      padding: 14px 22px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    }
+    .muscle-btn.active,
+    .muscle-btn:hover {
+      background: var(--text-main);
+      color: var(--bg-main);
+      border-color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .exercise-card {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    .exercise-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-orange);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+    }
+
+    .ex-img-container {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      overflow: hidden;
+      background: #111;
+    }
+    .ex-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+      transition: filter 0.5s ease, transform 0.5s ease;
+    }
+    .exercise-card:hover .ex-img-container img {
+      filter: grayscale(0%);
+      transform: scale(1.08);
+    }
+
+    .ex-img-container .gallery-overlay {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+      padding: 24px; box-sizing: border-box;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      transform: translateY(20px); opacity: 0; transition: 0.4s;
+    }
+    .exercise-card:hover .ex-img-container .gallery-overlay { transform: translateY(0); opacity: 1; }
+
+    .overlay-title { font-weight: 900; font-size: 1.25rem; color: var(--accent-orange); margin: 0; text-transform: uppercase; letter-spacing: -1px; }
+    .overlay-desc { font-size: 0.85rem; color: #ddd; margin-top: 8px; line-height: 1.4; font-weight: 400; }
+
+    .ex-info {
+      padding: 25px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .ex-logic {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin: 0;
+      min-height: 5rem;
+    }
+
+    .video-link {
+      display: inline-block;
+      background: var(--accent-orange);
+      color: #000;
+      text-align: center;
+      padding: 14px 18px;
+      text-decoration: none;
+      font-weight: 900;
+      border-radius: 14px;
+      transition: transform 0.3s ease;
+    }
+    .video-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .rec-tag {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      background: rgba(255,153,0,0.12);
+      color: var(--accent-orange);
+      margin-bottom: 10px;
+    }
+
+    .audio-hint {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255,153,0,0.9);
+      color: #000;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+    .exercise-card:hover .audio-hint {
+      opacity: 1;
+    }
+
+    @media (max-width: 1100px) {
+      .assessment-grid { grid-template-columns: 1fr; }
+      .sidebar { width: 85px; left: 10px; }
+      .nav-item span, .logo span { display: none; }
+      .content-area { margin-left: 100px; padding: 60px 20px; }
+      .ticker-wrap { left: 100px; width: calc(100% - 100px); }
+    }
+
+    @media (max-width: 720px) {
+      .sidebar { position: relative; width: 100%; height: auto; margin: 0; border-radius: 0; }
+      .content-area { margin-left: 0; padding: 30px 18px 60px; }
+      .ticker-wrap { left: 0; width: 100%; }
+      .exercise-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <audio id="motivational-audio" loop></audio>
+
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>• ARCHITECT YOUR PHYSIQUE • DATA DRIVEN RESULTS • DISCIPLINE OVER MOTIVATION • FUEL THE MACHINE • NO WEAKNESS ALLOWED • EVOLVE OR REMAIN THE SAME •</span>
+      <span>• ARCHITECT YOUR PHYSIQUE • DATA DRIVEN RESULTS • DISCIPLINE OVER MOTIVATION • FUEL THE MACHINE • NO WEAKNESS ALLOWED • EVOLVE OR REMAIN THE SAME •</span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="logo">FIT<span>LIFE</span></div>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-item">HOME</a>
+      <a href="about.html" class="nav-item">ABOUT</a>
+      <a href="services.html" class="nav-item active">SERVICES</a>
+      <a href="gallery.html" class="nav-item">GALLERY</a>
+      <a href="contact.html" class="nav-item">CONTACT</a>
+    </nav>
+    <button id="theme-toggle">
+      <span id="theme-icon">🌙</span> <span id="theme-text">DARK MODE</span>
+    </button>
+    <button onclick="history.back()" class="back-btn">⬅️ <span>GO BACK</span></button>
+  </aside>
+
+  <main class="content-area">
+    <header>
+      <h1 style="font-size: 3.5rem; font-weight: 900; letter-spacing: -3px; margin: 0;">WORKOUT PROTOCOLS</h1>
+      <p style="color: var(--text-dim); font-size: 1.1rem; margin-bottom: 40px;">Hover for Gaga Beats | 8 Elite Protocols per Group.</p>
+    </header>
+
+    <div class="assessment-grid">
+      <section class="input-card">
+        <h3 style="margin-top:0; color:var(--accent-orange)">[01] BIOMETRIC DATA</h3>
+        <div class="form-row">
+          <div>
+            <label for="age">Age</label>
+            <input type="number" id="age" placeholder="20">
+          </div>
+          <div>
+            <label for="gender">Gender</label>
+            <select id="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" placeholder="70">
+          </div>
+          <div>
+            <label for="height">Height (cm)</label>
+            <input type="number" id="height" placeholder="170">
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="bodyType">Current Body</label>
+            <select id="bodyType">
+              <option value="skinny">Skinny</option>
+              <option value="skinnyfat">Skinny Fat</option>
+              <option value="fat">Overweight</option>
+              <option value="athletic">Athletic</option>
+            </select>
+          </div>
+          <div>
+            <label for="goal">Goal</label>
+            <select id="goal">
+              <option value="bulk">Muscle Gain (Bulk)</option>
+              <option value="cut">Lose Fat (Cut)</option>
+              <option value="maintain">Maintenance</option>
+            </select>
+          </div>
+        </div>
+        <label for="days">Gym Days Per Week</label>
+        <select id="days" style="margin-bottom: 15px;">
+          <option value="2">1-2 Days (Home/Busy)</option>
+          <option value="3">3 Days (Full Body)</option>
+          <option value="4">4 Days (Upper / Lower)</option>
+          <option value="5">5 Days (Bro Split / PPL)</option>
+          <option value="6">6 Days (Arnold Split / PPL)</option>
+        </select>
+        <button class="calc-btn" onclick="analyzeFitness()">GENERATE STRATEGY</button>
+      </section>
+
+      <section class="result-card" id="results-box">
+        <h3 style="margin-top:0; color:var(--text-dim)">[02] ANALYSIS OUTPUT</h3>
+        <p style="color:var(--text-dim)">Input data to calculate caloric intake, split strategy, and meals.</p>
+      </section>
+    </div>
+
+    <div class="muscle-nav">
+      <button class="muscle-btn active" data-group="legs" onclick="showExercises('legs', this)">LEGS</button>
+      <button class="muscle-btn" data-group="back" onclick="showExercises('back', this)">BACK</button>
+      <button class="muscle-btn" data-group="chest" onclick="showExercises('chest', this)">CHEST</button>
+      <button class="muscle-btn" data-group="core" onclick="showExercises('core', this)">CORE</button>
+      <button class="muscle-btn" data-group="shoulder" onclick="showExercises('shoulder', this)">SHOULDERS</button>
+      <button class="muscle-btn" data-group="biceps" onclick="showExercises('biceps', this)">BICEPS</button>
+      <button class="muscle-btn" data-group="triceps" onclick="showExercises('triceps', this)">TRICEPS</button>
+    </div>
+
+    <div class="exercise-grid" id="exercise-display"></div>
+  </main>
+
+  <script>
+    const audio = document.getElementById('motivational-audio');
+
+    function analyzeFitness() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value) / 100;
+      const goal = document.getElementById('goal').value;
+      const days = parseInt(document.getElementById('days').value, 10);
+
+      if (!weight || !height) {
+        return alert('System requires biometrics.');
+      }
+
+      const bmi = (weight / (height * height)).toFixed(1);
+      const calories = goal === 'bulk' ? weight * 36 : goal === 'cut' ? weight * 27 : weight * 31;
+      const protein = Math.round(weight * 2);
+      let split = '';
+
+      if (days <= 2) split = 'Full Body Home Workout';
+      else if (days === 3) split = '3-Day Full Body Split';
+      else if (days === 4) split = 'Upper / Lower Split';
+      else if (days === 5) split = '5-Day Push / Pull / Legs';
+      else split = goal === 'bulk' ? 'Push / Pull / Legs (PPL)' : 'Arnold Split';
+
+      const mealTips = goal === 'cut'
+        ? 'High volume, low calorie meals like chicken, fish, greens, and egg whites.'
+        : 'High protein, higher carbs meals like rice, steak, oats, and whole eggs.';
+
+      const mealSearch = goal === 'cut' ? 'fat+loss+meal+prep' : 'muscle+gain+meal+prep';
+      const tiktokLink = `https://www.tiktok.com/search?q=${mealSearch}`;
+
+      document.getElementById('results-box').innerHTML = `
+        <div class="rec-tag">BMI: ${bmi}</div>
+        <div class="rec-tag">TARGET: ${goal.toUpperCase()}</div>
+        <h2 style="color:var(--accent-orange); font-size:2.4rem; margin:10px 0;">${Math.round(calories)} <small style="font-size:1rem; color:var(--text-dim)">kcal/day</small></h2>
+        <p><strong>Protein:</strong> ${protein}g | <strong>Split:</strong> ${split}</p>
+        <hr style="border:0; border-top:1px solid var(--card-border); margin:15px 0;">
+        <p style="font-size:0.95rem; margin-bottom:18px;"><strong>Recommended Meals:</strong> ${mealTips}</p>
+        <a href="${tiktokLink}" target="_blank" class="video-link">VIEW MEAL PREP ON TIKTOK</a>
+      `;
+    }
+
+    const workoutData = {
+      legs: {
+        song: './assets/audio/gym-hardstyle-lady-gaga-judas-hardstyle-remix-ft-chris-bumstead-4k.mp3',
+        exercises: [
+           { name: 'Barbell Back Squat', logic: 'Compound king for quads and glutes.', img: './assets/images/perfect-squat-form.jpg' },
+           { name: 'Leg Press', logic: 'Maximum mechanical tension.', img: './assets/images/leg-press.jpg' },
+           { name: 'Romanian Deadlift', logic: 'Primary hamstring growth.', img: './assets/images/the-romanian-deadlift-rdl-is-a-fundamental-1.jpg' },
+           { name: 'Leg Extensions', logic: 'Isolated quad definition.', img: './assets/images/leg-extensions-dangerous-for-your-knees-or-great.jpg' },
+           { name: 'Bulgarian Split Squat', logic: 'Unilateral growth.', img: './assets/images/bulgarian-sqats.jpg' },
+           { name: 'Calf Raises', logic: 'Lower leg volume.', img: './assets/images/calf-raises-exercise.jpg' }
+        ]
+      },
+      back: {
+        song: './assets/audio/lady-gaga-bad-romance-official-music-video.mp3',
+        exercises: [
+           { name: 'Deadlift', logic: 'Posterior chain absolute power.', img: './assets/images/deadlift.jpg' },
+           { name: 'Pull-Ups', logic: 'The gold standard for width.', img: './assets/images/pull-ups.jpg' },
+           { name: 'Bent Over Barbell Row', logic: 'Raw mid-back thickness.', img: './assets/images/bent-over-barbell-rows-should-be-a-garage-gym.jpg' },
+           { name: 'Lat Pulldown', logic: 'Vertical pull lat isolation.', img: './assets/images/lats-pll-down.jpg' },
+           { name: 'Seated Cable Row', logic: 'Controlled contraction focus.', img: './assets/images/cable-rows.jpg' },
+           { name: 'T-Bar Row', logic: 'Old school thickness builder.', img: './assets/images/t-bar-rows.jpg' }
+        ]
+      },
+      chest: {
+        song: './assets/audio/david-laid-outside-slowed-reverb.mp3',
+        exercises: [
+          { name: 'Barbell Bench Press', logic: 'Chest mass king exercise.', img: './assets/images/barbell-bench-press.jpg' },
+          { name: 'Incline Dumbbell Press', logic: 'Upper chest development.', img: './assets/images/press-incline-dumbell.jpg' },
+          { name: 'Dumbbell Flys', logic: 'Chest stretch and isolation.', img: './assets/images/duumbell-flys.jpg' },
+          { name: 'Machine Chest Press', logic: 'Controlled mechanical tension.', img: './assets/images/chest-press.jpg' },
+          { name: 'Cable Flys', logic: 'Peak contraction focus.', img: './assets/images/cable-flys.jpg' },
+          { name: 'Push-Ups', logic: 'Bodyweight chest builder.', img: './assets/images/push-ups.jpg' }
+        ]
+      },
+      core: {
+        song: './assets/audio/kendrick-lamar-humble.mp3',
+        exercises: [
+           { name: 'Hanging Leg Raises', logic: 'Lower ab targeting.', img: './assets/images/hanging-leg.jpg' },
+           { name: 'Cable Crunches', logic: 'Weighted hypertrophy.', img: './assets/images/cable-crunch.jpg' },
+           { name: 'Plank', logic: 'Isometric stability.', img: './assets/images/plank.jpg' },
+           { name: 'Russian Twists', logic: 'Oblique power.', img: './assets/images/russian-twist.jpg' },
+           { name: 'Ab Wheel', logic: 'Anti-extension strength.', img: './assets/images/ab-wheel.jpg' },
+           { name: 'Woodchoppers', logic: 'Functional rotation.', img: './assets/images/wood-chopper.jpg' }
+        ]  
+      },
+      shoulder: {
+        song: './assets/audio/doja-cat-so-high-explicit-version.mp3',
+        exercises: [
+           { name: 'Military Press', logic: 'Total shoulder power.', img: './assets/images/military-press-is-crucial-for-balanced-shoulder.jpg' },
+           { name: 'Lateral Raises', logic: 'Side delt width.', img: './assets/images/lateral-raise-correctly-1.jpg' },
+           { name: 'Face Pulls', logic: 'Rear delt and posture.', img: './assets/images/face-pull.jpg' },
+           { name: 'Arnold Press', logic: 'Full shoulder rotation.', img: './assets/images/arnold-press.jpg' },
+           { name: 'Rear Delt Flys', logic: 'Posterior density.', img: './assets/images/rear-delt-fly.jpg' }
+        ]
+      },
+      biceps: {
+        song: './assets/audio/rihanna-kiss-it-better-explicit-1.mp3',
+        exercises: [
+           { name: 'Barbell Curl', logic: 'Mass builder.', img: './assets/images/barbell-curl.jpg' },
+           { name: 'Hammer Curl', logic: 'Brachialis thickness.', img: './assets/images/hammer-curls-for.jpg' },
+           { name: 'Preacher Curl', logic: 'Strict peak contraction.', img: './assets/images/preacher-curls.jpg' },
+           { name: 'Cable Curl', logic: 'Constant tension.', img: './assets/images/cable-curl-benefits-muscles-worked-and-common.gif' }
+        ]
+      },
+      triceps: {
+        song: './assets/audio/chase-atlantic-swim-official-music-video.mp3',
+        exercises: [
+           { name: 'Skull Crushers', logic: 'Long head overload.', img: './assets/images/skull-cfrusher.jpg' },
+           { name: 'Tricep Pushdown', logic: 'Constant squeeze.', img: './assets/images/triceps-push-down.jpg' },
+           { name: 'Dips', logic: 'Bodyweight triceps mass.', img: './assets/images/dips.jpg' },
+           { name: 'Overhead Tricep Extension', logic: 'Long head stretch.', img: './assets/images/over-head-triceps.jpg' }
+        ]
+      }
+    };
+
+    function showExercises(group, button) {
+      if (!workoutData[group]) return;
+      document.querySelectorAll('.muscle-btn').forEach(btn => btn.classList.remove('active'));
+      if (button) button.classList.add('active');
+      const block = workoutData[group];
+      const container = document.getElementById('exercise-display');
+      container.innerHTML = block.exercises.map(ex => `
+        <article class="exercise-card">
+          <span class="audio-hint">PLAY: ${block.songName || 'MUSIC'}</span>
+          <div class="ex-img-container">
+            <img src="${ex.img}" alt="${ex.name}">
+            <div class="gallery-overlay">
+              <h3 class="overlay-title">${ex.name}</h3>
+              <p class="overlay-desc">${ex.logic}</p>
+            </div>
+          </div>
+          <div class="ex-info">
+            <span class="rec-tag">${group.toUpperCase()}</span>
+            <a class="video-link" href="https://www.youtube.com/results?search_query=${ex.yt}" target="_blank">Watch Demo</a>
+          </div>
+        </article>
+      `).join('');
+      if (audio && block.song) {
+        audio.src = encodeURI(block.song);
+        audio.currentTime = 0;
+        audio.play().catch((err) => { console.warn('Audio play prevented:', err); });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const activeButton = document.querySelector('.muscle-btn.active');
+      if (activeButton) {
+        showExercises(activeButton.dataset.group, activeButton);
+      } else {
+        showExercises('legs', document.querySelector('.muscle-btn'));
+      }
+    });
+
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const themeText = document.getElementById('theme-text');
+
+    const updateThemeUI = (isLight) => {
+      document.body.classList.toggle('light-mode', isLight);
+      themeIcon.innerText = isLight ? '☀️' : '🌙';
+      themeText.innerText = isLight ? 'LIGHT MODE' : 'DARK MODE';
+      localStorage.setItem('fitlife-theme', isLight ? 'light' : 'dark');
+    };
+
+    themeBtn.onclick = () => updateThemeUI(!document.body.classList.contains('light-mode'));
+
+    const savedTheme = localStorage.getItem('fitlife-theme');
+    if (savedTheme === 'light') updateThemeUI(true);
+  </script>
+</body>
+</html>

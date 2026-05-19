@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | FitLife Architect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #080808;
+            --text-main: #ffffff;
+            --sidebar-bg: rgba(10, 10, 10, 0.98);
+            --sidebar-border: #1a1a1a;
+            --accent-orange: #ff9900;
+            --accent-glow: rgba(255, 153, 0, 0.25);
+            --glass-card: rgba(18, 18, 18, 0.8);
+            --card-border: #222;
+            --text-dim: #666;
+        }
+
+        body.light-mode {
+            --bg-main: #f0f0f0;
+            --text-main: #111111;
+            --sidebar-bg: rgba(255, 255, 255, 0.95);
+            --sidebar-border: #ddd;
+            --glass-card: rgba(255, 255, 255, 0.9);
+            --card-border: #ccc;
+            --text-dim: #444;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed; left: 20px; top: 20px; height: calc(100vh - 40px); width: 260px;
+            background: var(--sidebar-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--sidebar-border); border-radius: 30px;
+            display: flex; flex-direction: column; padding: 40px 20px; z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .logo { font-weight: 900; font-size: 1.8rem; margin-bottom: 40px; display: flex; align-items: center; letter-spacing: -1px; }
+        .logo span { background: var(--accent-orange); color: #000; padding: 2px 8px; border-radius: 5px; margin-left: 4px; }
+
+        .nav-item {
+            text-decoration: none; color: var(--text-dim); padding: 12px 20px; border-radius: 12px;
+            font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        }
+        .nav-item.active { background: var(--accent-orange); color: #000 !important; box-shadow: 0 10px 20px var(--accent-glow); }
+
+        /* TICKER */
+        .ticker-wrap {
+            background: var(--accent-orange); color: #000;
+            padding: 10px 0; font-weight: 900; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 2px;
+            position: fixed; top: 0; left: 300px; width: calc(100% - 300px); z-index: 999;
+        }
+        .ticker { display: flex; animation: ticker 40s linear infinite; white-space: nowrap; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* CONTENT */
+        .content-area { margin-left: 300px; padding: 80px 60px 60px 60px; }
+
+        /* GRID SYSTEM */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* FORM STYLES */
+        .contact-box {
+            background: var(--glass-card);
+            border: 1px solid var(--card-border);
+            padding: 40px;
+            border-radius: 30px;
+        }
+
+        label { display: block; font-size: 0.65rem; font-weight: 900; color: var(--accent-orange); text-transform: uppercase; margin-bottom: 5px; }
+        input, textarea {
+            width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--card-border);
+            color: var(--text-main); padding: 15px; border-radius: 12px; outline: none; margin-bottom: 20px;
+            box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-color: var(--accent-orange); background: rgba(255,153,0,0.05); }
+
+        .submit-btn {
+            width: 100%; padding: 16px; background: var(--accent-orange);
+            border: none; border-radius: 15px; font-weight: 900; cursor: pointer; transition: 0.3s;
+        }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
+
+        /* DEVELOPER CARDS */
+        .dev-column { display: flex; flex-direction: column; gap: 20px; }
+        .dev-card {
+            background: var(--glass-card); border: 1px solid var(--card-border);
+            padding: 20px; border-radius: 30px; display: flex; align-items: center; gap: 20px;
+            transition: 0.3s ease;
+        }
+        .dev-card:hover { border-color: var(--accent-orange); transform: translateX(5px); }
+
+        .dev-img { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-orange); }
+        .dev-info h4 { margin: 0; font-size: 1.1rem; font-weight: 900; letter-spacing: -0.5px; }
+        .dev-info span { color: var(--accent-orange); font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
+
+        .social-links { display: flex; gap: 8px; margin-top: 8px; }
+        .mini-link {
+            text-decoration: none; color: var(--text-main); font-size: 0.7rem; font-weight: 900;
+            padding: 5px 12px; background: var(--card-border); border-radius: 8px; transition: 0.2s;
+        }
+        .mini-link:hover { background: var(--accent-orange); color: #000; }
+
+        .location-box {
+            padding: 25px; background: rgba(255,153,0,0.05);
+            border-radius: 25px; border-left: 4px solid var(--accent-orange);
+            margin-top: 10px;
+        }
+
+        #theme-toggle { margin-top: auto; background: var(--accent-orange); border: none; padding: 15px; border-radius: 15px; font-weight: 900; cursor: pointer; color: #000; }
+        .back-btn { margin-top: 10px; background: transparent; border: 1px solid var(--sidebar-border); color: var(--text-main); padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 800; }
+
+        @media (max-width: 1100px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .sidebar { width: 85px; left: 10px; }
+            .nav-item span, .logo span { display: none; }
+            .content-area { margin-left: 100px; padding: 60px 20px; }
+            .ticker-wrap { left: 100px; width: calc(100% - 100px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span>&nbsp;• ESTABLISH CONNECTION • PROJECT FITLIFE • DATA ARCHITECTS • DISCIPLINE OVER MOTIVATION • SYSTEM ONLINE • REACH OUT •&nbsp;</span>
+            <span>&nbsp;• ESTABLISH CONNECTION • PROJECT FITLIFE • DATA ARCHITECTS • DISCIPLINE OVER MOTIVATION • SYSTEM ONLINE • REACH OUT •&nbsp;</span>
+        </div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="logo">FIT<span>LIFE</span></div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">🏠 <span>HOME</span></a>
+            <a href="about.html" class="nav-item">📖 <span>ABOUT</span></a>
+            <a href="services.html" class="nav-item">💪 <span>SERVICES</span></a>
+            <a href="gallery.html" class="nav-item">🖼️ <span>GALLERY</span></a>
+            <a href="contact.html" class="nav-item active">📞 <span>CONTACT</span></a>
+        </nav>
+        <button id="theme-toggle">🌙 <span>DARK MODE</span></button>
+        <button onclick="history.back()" class="back-btn">⬅️ <span>GO BACK</span></button>
+    </aside>
+
+    <main class="content-area">
+        <header>
+            <h1 style="font-size: 3.5rem; font-weight: 900; letter-spacing: -3px; margin: 0;">CONTACT US</h1>
+            <p style="color: var(--text-dim); font-size: 1.1rem; margin-bottom: 40px;">Transmission channel for development inquiries.</p>
+        </header>
+
+        <div class="contact-grid">
+            <section class="contact-box">
+                <h3 style="margin-top:0; color:var(--accent-orange)">[ TRANSMIT MESSAGE ]</h3>
+                <form action="#">
+                    <label>Full Identification</label>
+                    <input type="text" placeholder="Your Name">
+                    
+                    <label>Return Address (Email)</label>
+                    <input type="email" placeholder="email@example.com">
+                    
+                    <label>Communication Details</label>
+                    <textarea rows="6" placeholder="How can our architects assist you?"></textarea>
+                    
+                    <button type="submit" class="submit-btn">SEND PROTOCOL</button>
+                </form>
+            </section>
+
+            <div class="dev-column">
+                <h3 style="margin: 0; font-size: 0.75rem; color: var(--accent-orange); letter-spacing: 2px; font-weight: 900;">[ THE ARCHITECTS ]</h3>
+                
+                <div class="dev-card">
+                    <img src="kla.jpg" alt="Klarenz" class="dev-img">
+                    <div class="dev-info">
+                        <span>Lead Developer</span>
+                        <h4>Klarenz B. Sinlao</h4>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/klarenz.sinlao.2024" target="_blank" class="mini-link">FB</a>
+                            <a href="https://www.instagram.com/klarenzo0?igsh=OGNhdnU5Z3QzcTlj" target="_blank" class="mini-link">IG</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dev-card">
+                    <img src="jovels.jpg" alt="Jovel" class="dev-img" onerror="this.src='https://via.placeholder.com/75/ff9900/000000?text=JB'">
+                    <div class="dev-info">
+                        <span>UI/UX Designer</span>
+                        <h4>Jovel B. Betita</h4>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/jovel.betita.39" target="_blank" class="mini-link">FB</a>
+                            <a href="https://www.instagram.com/_ur.jovs?igsh=dGxqMDN3ZHN6eGR6" target="_blank" class="mini-link">IG</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="location-box">
+                    <p style="font-weight: 900; font-size: 0.7rem; color: var(--accent-orange); margin: 0 0 5px 0;">📍 HEADQUARTERS</p>
+                    <p style="font-size: 0.85rem; color: var(--text-dim); margin: 0 0 15px 0;">Tobuan Labrador, Pangasinan, Philippines</p>
+                    
+                    <p style="font-weight: 900; font-size: 0.7rem; color: var(--accent-orange); margin: 0 0 5px 0;">📞 COMMS LINK</p>
+                    <p style="font-size: 1.1rem; font-weight: 900; color: var(--text-main); margin: 0;">+63 9705784412</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const updateTheme = (isLight) => {
+            document.body.classList.toggle('light-mode', isLight);
+            themeBtn.querySelector('span').innerText = isLight ? 'LIGHT MODE' : 'DARK MODE';
+            themeBtn.childNodes[0].textContent = isLight ? '☀️ ' : '🌙 ';
+            localStorage.setItem('fitlife-theme', isLight ? 'light' : 'dark');
+        };
+
+        themeBtn.onclick = () => updateTheme(!document.body.classList.contains('light-mode'));
+
+        window.onload = () => {
+            const saved = localStorage.getItem('fitlife-theme');
+            if (saved === 'light') updateTheme(true);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | FitLife Architect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #080808;
+            --text-main: #ffffff;
+            --sidebar-bg: rgba(10, 10, 10, 0.98);
+            --sidebar-border: #1a1a1a;
+            --accent-orange: #ff9900;
+            --accent-glow: rgba(255, 153, 0, 0.25);
+            --glass-card: rgba(18, 18, 18, 0.8);
+            --card-border: #222;
+            --text-dim: #666;
+        }
+
+        body.light-mode {
+            --bg-main: #f0f0f0;
+            --text-main: #111111;
+            --sidebar-bg: rgba(255, 255, 255, 0.95);
+            --sidebar-border: #ddd;
+            --glass-card: rgba(255, 255, 255, 0.9);
+            --card-border: #ccc;
+            --text-dim: #444;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed; left: 20px; top: 20px; height: calc(100vh - 40px); width: 260px;
+            background: var(--sidebar-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--sidebar-border); border-radius: 30px;
+            display: flex; flex-direction: column; padding: 40px 20px; z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .logo { font-weight: 900; font-size: 1.8rem; margin-bottom: 40px; display: flex; align-items: center; letter-spacing: -1px; }
+        .logo span { background: var(--accent-orange); color: #000; padding: 2px 8px; border-radius: 5px; margin-left: 4px; }
+
+        .nav-item {
+            text-decoration: none; color: var(--text-dim); padding: 12px 20px; border-radius: 12px;
+            font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        }
+        .nav-item.active { background: var(--accent-orange); color: #000 !important; box-shadow: 0 10px 20px var(--accent-glow); }
+
+        /* TICKER */
+        .ticker-wrap {
+            background: var(--accent-orange); color: #000;
+            padding: 10px 0; font-weight: 900; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 2px;
+            position: fixed; top: 0; left: 300px; width: calc(100% - 300px); z-index: 999;
+        }
+        .ticker { display: flex; animation: ticker 40s linear infinite; white-space: nowrap; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* CONTENT AREA */
+        .content-area { margin-left: 300px; padding: 100px 60px 60px 60px; }
+
+        .gallery-header { margin-bottom: 50px; }
+        .gallery-header h1 { font-size: 4rem; font-weight: 900; letter-spacing: -4px; margin: 0; line-height: 1; }
+        .gallery-header p { color: var(--accent-orange); font-weight: 800; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; }
+
+        /* GALLERY GRID */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 380px;
+            border-radius: 25px;
+            overflow: hidden;
+            background: var(--glass-card);
+            border: 1px solid var(--card-border);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 0.6s; filter: grayscale(100%);
+        }
+
+        .gallery-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+            padding: 30px; box-sizing: border-box;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            transform: translateY(20px); opacity: 0; transition: 0.4s;
+        }
+
+        .gallery-item:hover { transform: translateY(-10px); border-color: var(--accent-orange); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+        .gallery-item:hover img { transform: scale(1.08); filter: grayscale(0%); }
+        .gallery-item:hover .gallery-overlay { transform: translateY(0); opacity: 1; }
+
+        .overlay-title { font-weight: 900; font-size: 1.4rem; color: var(--accent-orange); margin: 0; text-transform: uppercase; letter-spacing: -1px; }
+        .overlay-desc { font-size: 0.85rem; color: #ddd; margin-top: 8px; line-height: 1.5; font-weight: 400; }
+
+        /* CONTROLS */
+        #theme-toggle { margin-top: auto; background: var(--accent-orange); border: none; padding: 15px; border-radius: 15px; font-weight: 900; cursor: pointer; color: #000; }
+        .back-btn { margin-top: 10px; background: transparent; border: 1px solid var(--sidebar-border); color: var(--text-main); padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 800; }
+
+        @media (max-width: 1100px) {
+            .sidebar { width: 85px; left: 10px; }
+            .nav-item span, .logo span { display: none; }
+            .content-area { margin-left: 100px; padding: 100px 20px; }
+            .ticker-wrap { left: 100px; width: calc(100% - 100px); }
+            .gallery-header h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span>&nbsp;• FACILITY ZONES • PRECISION EQUIPMENT • NO EXCUSES • PURE DISCIPLINE • THE IRON TEMPLE • ARCHITECTURE OF STRENGTH •&nbsp;</span>
+            <span>&nbsp;• FACILITY ZONES • PRECISION EQUIPMENT • NO EXCUSES • PURE DISCIPLINE • THE IRON TEMPLE • ARCHITECTURE OF STRENGTH •&nbsp;</span>
+        </div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="logo">FIT<span>LIFE</span></div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">🏠 <span>HOME</span></a>
+            <a href="about.html" class="nav-item">📖 <span>ABOUT</span></a>
+            <a href="services.html" class="nav-item">💪 <span>SERVICES</span></a>
+            <a href="gallery.html" class="nav-item active">🖼️ <span>GALLERY</span></a>
+            <a href="contact.html" class="nav-item">📞 <span>CONTACT</span></a>
+        </nav>
+        <button id="theme-toggle">🌙 <span>DARK MODE</span></button>
+        <button onclick="history.back()" class="back-btn">⬅️ <span>GO BACK</span></button>
+    </aside>
+
+    <main class="content-area">
+        <div class="gallery-header">
+            <p>Facility Overview</p>
+            <h1>TRAINING ZONES</h1>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=1000" alt="Cardio Area">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Cardio Area</h3>
+                    <p class="overlay-desc">Equipped with the latest treadmills, ellipticals, and stair climbers. Perfect for warming up or intense endurance tracking.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000" alt="Legs Area">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Legs Area</h3>
+                    <p class="overlay-desc">Dedicated heavy-duty squat racks, leg presses, and hack squats to build absolute lower-body power and foundations.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1000" alt="Biceps Area">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Biceps Area</h3>
+                    <p class="overlay-desc">A strict isolation zone featuring preacher curl benches, EZ-bars, and cable stations designed for peak arm contraction.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1581009137042-c552e485697a?q=80&w=1000" alt="Triceps Area">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Triceps Area</h3>
+                    <p class="overlay-desc">Engineered for arm lockouts. Features dip stations, skull-crusher benches, and heavy cable pushdowns for horseshoe triceps.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000" alt="Chest Area">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Chest Area</h3>
+                    <p class="overlay-desc">Flat, incline, and decline Olympic benches paired with heavy dumbbell sections to maximize upper body push limits.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1000" alt="Back Area">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Back Area</h3>
+                    <p class="overlay-desc">Lat pulldowns, T-bar rows, and deadlift platforms. Everything you need to sculpt a strong, wide back.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000" alt="Core Area">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Core & Abs Area</h3>
+                    <p class="overlay-desc">Decline crunch benches, medicine balls, and open turf space designed specifically for deep abdominal and core stability work.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=1000" alt="Free Weights">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Free Weights</h3>
+                    <p class="overlay-desc">A massive wall of calibrated dumbbells ranging from 5 lbs to 150 lbs. The pure iron temple for custom movements.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1000" alt="Comfort Room">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Comfort Room</h3>
+                    <p class="overlay-desc">Premium, clean, and modern locker rooms. Featuring high-pressure showers and secure lockers for pre- and post-workout prep.</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?q=80&w=1000" alt="Reception">
+                <div class="gallery-overlay">
+                    <h3 class="overlay-title">Hydration Station</h3>
+                    <p class="overlay-desc">The front desk and lounge area where you can grab water, electrolyte drinks, and protein shakes before or after your session.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const updateTheme = (isLight) => {
+            document.body.classList.toggle('light-mode', isLight);
+            themeBtn.querySelector('span').innerText = isLight ? 'LIGHT MODE' : 'DARK MODE';
+            themeBtn.childNodes[0].textContent = isLight ? '☀️ ' : '🌙 ';
+            localStorage.setItem('fitlife-theme', isLight ? 'light' : 'dark');
+        };
+
+        themeBtn.onclick = () => updateTheme(!document.body.classList.contains('light-mode'));
+
+        window.onload = () => {
+            const saved = localStorage.getItem('fitlife-theme');
+            if (saved === 'light') updateTheme(true);
+        };
+    </script>
+</body>
+</html>
